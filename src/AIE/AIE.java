@@ -65,13 +65,14 @@ public final class AIE {
 	}
 	
 	public static final int generateKey() {
-		return Integer.MIN_VALUE + random.nextInt(Integer.MAX_VALUE)*2;
+		return random.nextInt(Integer.MAX_VALUE);
 	}
 	
 	private static final String deepEncode(final String text, final int key) {
-		random.setSeed(key);
+		sb.setLength(0);
+		sb.append(text);
 		
-		final StringBuilder sb = new StringBuilder(text);
+		random.setSeed(key);
 		
 		for(int i = 0; i < random.nextInt(MAX_DEEP); i++) {
 			random.setSeed(key+i);
@@ -83,10 +84,11 @@ public final class AIE {
 	}
 	
 	private static final String deepDecode(final String text, final int key) {
+		sb.setLength(0);
+		sb.append(text);
+		
 		random.setSeed(key);
-		
-		final StringBuilder sb = new StringBuilder(text);
-		
+
 		for(int i = 0; i < random.nextInt(MAX_DEEP); i++) {
 			random.setSeed(key+i);
 
@@ -102,7 +104,11 @@ public final class AIE {
 		
 		for(int i = 0; i < text.length(); i++) {
 			random.setSeed(key+i+text.length());
+			if(generateKey() > 0) {
 			sb.append((char) (text.charAt(i)+generateKey()));
+			} else {
+				sb.append((char) (text.charAt(i)-generateKey()));
+			}
 		}
 		
 		return sb.toString();
@@ -113,7 +119,11 @@ public final class AIE {
 		
 		for(int i = 0; i < text.length(); i++) {
 			random.setSeed(key+i+text.length());
-			sb.append((char) (text.charAt(i)-generateKey()));
+			if(generateKey() > 0) {
+				sb.append((char) (text.charAt(i)-generateKey()));
+				} else {
+					sb.append((char) (text.charAt(i)+generateKey()));
+				}
 		}
 		
 		return sb.toString();
