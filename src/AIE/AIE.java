@@ -18,16 +18,11 @@ public final class AIE {
 	private static final SecureRandom secureRandom = new SecureRandom();
 	
 	public static void main(String[] args) {
-		int[][] testKeys = generateKeys();
-		String testText = "Some plain text for testing";
+		int[][] key = generateKeys();
 		
-		long start = System.currentTimeMillis();
+		System.out.println(encrypt("Hello",key));
+		System.out.println(decrypt(encrypt("Hello",key),key));
 		
-		System.out.println(decrypt(encrypt(testText,testKeys),testKeys));
-		
-		long end = System.currentTimeMillis()-start;
-		
-		System.out.println(end);
 	}
 	
 	public static final String decrypt(String text, final int[][] keys) {
@@ -74,7 +69,7 @@ public final class AIE {
 		
 		random.setSeed(key);
 		
-		for(int i = 0; i < random.nextInt(MAX_DEEP); i++) {
+		for(int i = 0; i < MAX_DEEP/2+random.nextInt(MAX_DEEP/2); i++) {
 			random.setSeed(key+i);
 			sb.append(encode(sb.toString(),generateKey()));
 			sb.delete(0, text.length());
@@ -89,7 +84,7 @@ public final class AIE {
 		
 		random.setSeed(key);
 
-		for(int i = 0; i < random.nextInt(MAX_DEEP); i++) {
+		for(int i = 0; i < MAX_DEEP/2+random.nextInt(MAX_DEEP/2); i++) {
 			random.setSeed(key+i);
 
 			sb.append(decode(sb.toString(),generateKey()));
