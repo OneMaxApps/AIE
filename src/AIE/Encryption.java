@@ -1,24 +1,18 @@
 package AIE;
 
-import java.security.SecureRandom;
-import java.util.Random;
-
 // AIE - Ahmedhanov Islam Encryption
 
-public final class AIE {
+public final class Encryption {
 	
-	private AIE() {}
+	private Encryption() {}
 	
-	private static final int MAX_DEEP = 200,
-							 MAX_DEEP_FOR_INNER_ARRAYS_OF_KEYS = 10,
-		 	 				 MAX_KEYS = 1000;
+	
 	
 	private static final StringBuilder sb = new StringBuilder();
-	private static final Random random = new Random();
-	private static final SecureRandom secureRandom = new SecureRandom();
+	
 	
 	public static void main(String[] args) {
-		int[][] key = generateKeys();
+		int[][] key = Generator.generateKeys();
 		
 		System.out.println(encrypt("Hello",key));
 		System.out.println(decrypt(encrypt("Hello",key),key));
@@ -47,31 +41,17 @@ public final class AIE {
 		return text;
 	}
 	
-	public static final int[][] generateKeys() {
-		final int[][] keys = new int[1 + (int) secureRandom.nextInt(MAX_KEYS)][1 + (int) secureRandom.nextInt(MAX_DEEP_FOR_INNER_ARRAYS_OF_KEYS)];
-		
-		for(int i = 0; i < keys.length; i++) {
-			for(int j = 0; j < keys[i].length; j++) {
-			keys[i][j] = secureRandom.nextInt(Integer.MAX_VALUE);
-			}
-		}
-		
-		return keys;
-	}
 	
-	public static final int generateKey() {
-		return random.nextInt(Integer.MAX_VALUE);
-	}
 	
 	private static final String deepEncode(final String text, final int key) {
 		sb.setLength(0);
 		sb.append(text);
 		
-		random.setSeed(key);
+		Generator.random.setSeed(key);
 		
-		for(int i = 0; i < MAX_DEEP/2+random.nextInt(MAX_DEEP/2); i++) {
-			random.setSeed(key+i);
-			sb.append(encode(sb.toString(),generateKey()));
+		for(int i = 0; i < Constants.MAX_DEEP/2+Generator.random.nextInt(Constants.MAX_DEEP/2); i++) {
+			Generator.random.setSeed(key+i);
+			sb.append(encode(sb.toString(),Generator.generateKey()));
 			sb.delete(0, text.length());
 		}
 		
@@ -82,12 +62,12 @@ public final class AIE {
 		sb.setLength(0);
 		sb.append(text);
 		
-		random.setSeed(key);
+		Generator.random.setSeed(key);
 
-		for(int i = 0; i < MAX_DEEP/2+random.nextInt(MAX_DEEP/2); i++) {
-			random.setSeed(key+i);
+		for(int i = 0; i < Constants.MAX_DEEP/2+Generator.random.nextInt(Constants.MAX_DEEP/2); i++) {
+			Generator.random.setSeed(key+i);
 
-			sb.append(decode(sb.toString(),generateKey()));
+			sb.append(decode(sb.toString(),Generator.generateKey()));
 			sb.delete(0, text.length());
 		}
 		
@@ -98,11 +78,11 @@ public final class AIE {
 		sb.setLength(0);
 		
 		for(int i = 0; i < text.length(); i++) {
-			random.setSeed(key+i+text.length());
-			if(generateKey() > 0) {
-			sb.append((char) (text.charAt(i)+generateKey()));
+			Generator.random.setSeed(key+i+text.length());
+			if(Generator.generateKey() > 0) {
+			sb.append((char) (text.charAt(i)+Generator.generateKey()));
 			} else {
-				sb.append((char) (text.charAt(i)-generateKey()));
+				sb.append((char) (text.charAt(i)-Generator.generateKey()));
 			}
 		}
 		
@@ -113,11 +93,11 @@ public final class AIE {
 		sb.setLength(0);
 		
 		for(int i = 0; i < text.length(); i++) {
-			random.setSeed(key+i+text.length());
-			if(generateKey() > 0) {
-				sb.append((char) (text.charAt(i)-generateKey()));
+			Generator.random.setSeed(key+i+text.length());
+			if(Generator.generateKey() > 0) {
+				sb.append((char) (text.charAt(i)-Generator.generateKey()));
 				} else {
-					sb.append((char) (text.charAt(i)+generateKey()));
+					sb.append((char) (text.charAt(i)+Generator.generateKey()));
 				}
 		}
 		
