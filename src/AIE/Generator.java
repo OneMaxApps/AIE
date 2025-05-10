@@ -12,7 +12,7 @@ public final class Generator {
 	private Generator() {}
 	
 	public static final int[][] generate2DKey() {
-		final int[][] keys = new int[1 + (int) secureRandom.nextInt(MAX_KEYS)][1 + (int) secureRandom.nextInt(MAX_SUB_KEYS)];
+		final int[][] keys = new int[MIN_KEYS + (int) secureRandom.nextInt(MAX_KEYS-MIN_KEYS+1)][MIN_SUB_KEYS + (int) secureRandom.nextInt(MAX_SUB_KEYS-MIN_SUB_KEYS+1)];
 		
 		for(int i = 0; i < keys.length; i++) {
 			for(int j = 0; j < keys[i].length; j++) {

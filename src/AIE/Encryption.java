@@ -3,24 +3,18 @@ package AIE;
 import static AIE.Constants.*;
 import static AIE.Generator.*;
 
-// AIE - Ahmedhanov Islam Encryption
+/**
+ * AIE - Ahmedhanov Islam Encryption
+ * <p>
+ * This is the main class for working with text for encryption
+ * </p>
+ */
 
 public final class Encryption {
 	
 	private Encryption() {}
 	
 	private static final StringBuilder sb = new StringBuilder();
-	
-	public static void main(String[] args) {
-		int[][] keys = generate2DKey();
-		String word = "Word";
-		System.out.println(decrypt(encrypt(word,keys),keys));
-		
-		for(int i = 0; i < 100; i++) {
-			System.out.println(generateKey());
-		}
-		
-	}
 	
 	public static final String decrypt(final String text, final int[][] keys) {
 		sb.setLength(0);
